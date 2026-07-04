@@ -1,0 +1,22 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "functions": {
+    "api/index.py": {
+      "excludeFiles": "{.venv/**,**/__pycache__/**,**/*.pyc,.agents/**,.codex/**,1st,outputs/**}"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/gerar_planilha",
+      "destination": "/api?route=workbook"
+    },
+    {
+      "source": "/api/gerar-planilha",
+      "destination": "/api?route=workbook"
+    },
+    {
+      "source": "/api/preview",
+      "destination": "/api?route=preview"
+    }
+  ]
+}
