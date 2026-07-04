@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Planejamento</title>
+    <meta
+      name="description"
+      content="Painel web"
+    >
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação principal">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">DB</div>
+          <div>
+            <strong>Dropshipping Brasil</strong>
+            <span>Painel operacional</span>
+          </div>
+        </div>
+
+        <nav class="nav-list">
+          <button class="nav-item is-active" type="button" data-view-target="dashboard">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Visão geral
+          </button>
+          <button class="nav-item" type="button" data-view-target="produtos">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Produtos
+          </button>
+          <button class="nav-item" type="button" data-view-target="fornecedores">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Fornecedores
+          </button>
+          <button class="nav-item" type="button" data-view-target="precificacao">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Precificação
+          </button>
+          <button class="nav-item" type="button" data-view-target="cronograma">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Cronograma
+          </button>
+          <button class="nav-item" type="button" data-view-target="riscos">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Riscos
+          </button>
+          <button class="nav-item" type="button" data-view-target="checklist">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Checklist
+          </button>
+          <button class="nav-item" type="button" data-view-target="ferramentas">
+            <span class="nav-dot" aria-hidden="true"></span>
+            Ferramentas
+          </button>
+        </nav>
+
+        <div class="sidebar-footer">
+          <a class="button button-primary" href="outputs/planejamento_dropshipping_brasil_melhorado.xlsx" download>
+            Baixar XLSX
+          </a>
+          <a class="button button-ghost" href="outputs/dashboard_preview.png" target="_blank" rel="noreferrer">
+            Ver prévia
+          </a>
+        </div>
+      </aside>
+
+      <div class="content-shell">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Planilha convertida em produto web</p>
+            <h1 id="page-title">Visão geral</h1>
+          </div>
+          <div class="topbar-actions">
+            <span class="status-pill">17 abas</span>
+            <span class="status-pill">22 produtos</span>
+            <button class="button button-ghost" type="button" id="print-page">Imprimir</button>
+          </div>
+        </header>
+
+        <main id="main" tabindex="-1">
+          <section class="view is-active" id="dashboard" aria-labelledby="dashboard-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Resumo executivo</p>
+                <h2 id="dashboard-title">Painel da estratégia</h2>
+              </div>
+              <p>
+                O foco inicial é validar produtos simples, reduzir risco operacional e escalar apenas com margem real.
+              </p>
+            </div>
+
+            <div class="metric-grid" id="metric-grid"></div>
+
+            <div class="dashboard-layout">
+              <figure class="preview-panel">
+                <img src="outputs/dashboard_preview.png" alt="Prévia visual do dashboard da planilha">
+                <figcaption>Prévia gerada junto com a planilha Excel.</figcaption>
+              </figure>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <p class="eyebrow">Ranking</p>
+                    <h3>Nichos priorizados</h3>
+                  </div>
+                </div>
+                <div class="ranking-list" id="ranking-list"></div>
+              </div>
+            </div>
+
+            <div class="split-grid">
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <p class="eyebrow">Capital</p>
+                    <h3>Faixas de custo inicial</h3>
+                  </div>
+                </div>
+                <div class="cost-bars" id="cost-bars"></div>
+              </div>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <p class="eyebrow">Financeiro</p>
+                    <h3>Projeção de 3 meses</h3>
+                  </div>
+                </div>
+                <div class="scenario-grid" id="scenario-grid"></div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="produtos" aria-labelledby="produtos-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Catálogo validável</p>
+                <h2 id="produtos-title">Produtos e margens</h2>
+              </div>
+              <p>Filtre, ordene e envie um produto direto para a calculadora de precificação.</p>
+            </div>
+
+            <div class="toolbar" aria-label="Filtros de produtos">
+              <label class="field field-search">
+                <span>Buscar</span>
+                <input id="product-search" type="search" placeholder="Produto, nicho, fornecedor ou observação">
+              </label>
+              <label class="field">
+                <span>Nicho</span>
+                <select id="niche-filter"></select>
+              </label>
+              <label class="field">
+                <span>Risco</span>
+                <select id="risk-filter"></select>
+              </label>
+              <label class="field">
+                <span>Fornecedor</span>
+                <select id="supplier-filter"></select>
+              </label>
+              <label class="field">
+                <span>Ordenar</span>
+                <select id="product-sort">
+                  <option value="score">Recomendação</option>
+                  <option value="margin-desc">Maior margem</option>
+                  <option value="price-asc">Menor preço</option>
+                  <option value="risk-asc">Menor risco</option>
+                  <option value="supplier">Fornecedor</option>
+                </select>
+              </label>
+              <button class="button button-ghost" type="button" id="reset-product-filters">Limpar</button>
+              <button class="button button-secondary" type="button" id="export-products">Exportar CSV</button>
+            </div>
+
+            <div class="summary-strip" id="product-summary"></div>
+
+            <div class="product-layout">
+              <div class="table-frame">
+                <table class="data-table" id="products-table">
+                  <thead>
+                    <tr>
+                      <th>Produto</th>
+                      <th>Nicho</th>
+                      <th>Fornecedor</th>
+                      <th>Preço</th>
+                      <th>Margem</th>
+                      <th>Risco</th>
+                      <th>Ação</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              <aside class="detail-panel" id="product-detail" aria-live="polite"></aside>
+            </div>
+          </section>
+
+          <section class="view" id="fornecedores" aria-labelledby="fornecedores-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Operação</p>
+                <h2 id="fornecedores-title">Comparação de fornecedores</h2>
+              </div>
+              <p>Compare prazo, maturidade para iniciante, integração e cuidado operacional.</p>
+            </div>
+
+            <div class="toolbar">
+              <label class="field">
+                <span>Indicado para iniciante</span>
+                <select id="supplier-starter-filter">
+                  <option value="all">Todos</option>
+                  <option value="Sim">Sim</option>
+                  <option value="Parcial">Parcial</option>
+                  <option value="Não">Não</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Confiabilidade</span>
+                <select id="supplier-reliability-filter">
+                  <option value="all">Todas</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Média">Média</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="supplier-grid" id="supplier-grid"></div>
+          </section>
+
+          <section class="view" id="precificacao" aria-labelledby="precificacao-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Simulador</p>
+                <h2 id="precificacao-title">Preço, margem e CPA</h2>
+              </div>
+              <p>Atualize os campos para descobrir margem líquida, CPA máximo e preço mínimo para sua meta.</p>
+            </div>
+
+            <div class="pricing-layout">
+              <form class="panel calculator" id="pricing-form">
+                <div class="panel-header">
+                  <div>
+                    <p class="eyebrow">Entradas</p>
+                    <h3>Calculadora</h3>
+                  </div>
+                  <button class="button button-ghost" type="reset">Restaurar</button>
+                </div>
+                <div class="form-grid">
+                  <label class="field">
+                    <span>Custo do produto</span>
+                    <input type="number" min="0" step="0.01" id="calc-cost" value="29.90">
+                  </label>
+                  <label class="field">
+                    <span>Frete</span>
+                    <input type="number" min="0" step="0.01" id="calc-freight" value="12.50">
+                  </label>
+                  <label class="field">
+                    <span>Preço de venda</span>
+                    <input type="number" min="1" step="0.01" id="calc-price" value="89.90">
+                  </label>
+                  <label class="field">
+                    <span>CPA/anúncio</span>
+                    <input type="number" min="0" step="0.01" id="calc-cpa" value="8.00">
+                  </label>
+                  <label class="field">
+                    <span>Taxa plataforma</span>
+                    <input type="number" min="0" max="1" step="0.001" id="calc-platform" value="0.050">
+                  </label>
+                  <label class="field">
+                    <span>Taxa pagamento</span>
+                    <input type="number" min="0" max="1" step="0.001" id="calc-payment" value="0.032">
+                  </label>
+                  <label class="field">
+                    <span>Imposto estimado</span>
+                    <input type="number" min="0" max="1" step="0.001" id="calc-tax" value="0.060">
+                  </label>
+                  <label class="field">
+                    <span>Reserva reembolso</span>
+                    <input type="number" min="0" step="0.01" id="calc-refund" value="3.50">
+                  </label>
+                  <label class="field">
+                    <span>Margem alvo</span>
+                    <input type="number" min="0" max="0.9" step="0.01" id="calc-target" value="0.35">
+                  </label>
+                </div>
+              </form>
+
+              <div class="panel">
+                <div class="panel-header">
+                  <div>
+                    <p class="eyebrow">Resultado</p>
+                    <h3>Diagnóstico financeiro</h3>
+                  </div>
+                  <span class="result-badge" id="margin-badge">Calculando</span>
+                </div>
+                <div class="result-grid" id="pricing-results"></div>
+                <div class="load-products">
+                  <h4>Carregar produto da tabela</h4>
+                  <div id="product-load-buttons"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="cronograma" aria-labelledby="cronograma-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Execução</p>
+                <h2 id="cronograma-title">Cronograma de 30 dias</h2>
+              </div>
+              <p>Marque andamento por dia. O progresso fica salvo neste navegador.</p>
+            </div>
+
+            <div class="progress-panel">
+              <div>
+                <strong id="schedule-progress-label">0% concluído</strong>
+                <span>Plano de validação e lançamento</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div id="schedule-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <label class="field">
+                <span>Status</span>
+                <select id="schedule-filter">
+                  <option value="all">Todos</option>
+                  <option value="Pendente">Pendente</option>
+                  <option value="Em andamento">Em andamento</option>
+                  <option value="Concluído">Concluído</option>
+                </select>
+              </label>
+              <button class="button button-ghost" type="button" id="reset-schedule">Restaurar cronograma</button>
+            </div>
+
+            <div class="timeline" id="schedule-list"></div>
+          </section>
+
+          <section class="view" id="riscos" aria-labelledby="riscos-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Controle</p>
+                <h2 id="riscos-title">Riscos e mitigação</h2>
+              </div>
+              <p>Priorize riscos de alta gravidade e alta probabilidade antes de colocar dinheiro em tráfego.</p>
+            </div>
+
+            <div class="toolbar">
+              <label class="field">
+                <span>Gravidade</span>
+                <select id="risk-severity-filter">
+                  <option value="all">Todas</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Média">Média</option>
+                  <option value="Baixa">Baixa</option>
+                </select>
+              </label>
+              <label class="field">
+                <span>Probabilidade</span>
+                <select id="risk-probability-filter">
+                  <option value="all">Todas</option>
+                  <option value="Alta">Alta</option>
+                  <option value="Média">Média</option>
+                  <option value="Baixa">Baixa</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="risk-layout">
+              <div class="risk-matrix" id="risk-matrix"></div>
+              <div class="risk-list" id="risk-list"></div>
+            </div>
+          </section>
+
+          <section class="view" id="checklist" aria-labelledby="checklist-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Pronto para vender</p>
+                <h2 id="checklist-title">Checklist final</h2>
+              </div>
+              <p>Controle os pré-requisitos antes de investir mais dinheiro em anúncio.</p>
+            </div>
+
+            <div class="progress-panel">
+              <div>
+                <strong id="checklist-progress-label">0% concluído</strong>
+                <span>Itens obrigatórios e operacionais</span>
+              </div>
+              <div class="progress-track" aria-hidden="true">
+                <div id="checklist-progress-bar"></div>
+              </div>
+            </div>
+
+            <div class="toolbar">
+              <button class="button button-secondary" type="button" id="export-checklist">Exportar CSV</button>
+              <button class="button button-ghost" type="button" id="reset-checklist">Limpar marcações</button>
+            </div>
+
+            <div class="checklist-grid" id="checklist-list"></div>
+          </section>
+
+          <section class="view" id="ferramentas" aria-labelledby="ferramentas-title">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Stack enxuto</p>
+                <h2 id="ferramentas-title">Ferramentas recomendadas</h2>
+              </div>
+              <p>Comece simples. Só adicione automação depois que houver produto, margem e operação estáveis.</p>
+            </div>
+
+            <div class="toolbar">
+              <label class="field field-search">
+                <span>Buscar</span>
+                <input id="tool-search" type="search" placeholder="Categoria, ferramenta ou função">
+              </label>
+              <label class="field">
+                <span>Vale para iniciante</span>
+                <select id="tool-starter-filter">
+                  <option value="all">Todos</option>
+                  <option value="Sim">Sim</option>
+                  <option value="Parcial">Parcial</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="table-frame">
+              <table class="data-table" id="tools-table">
+                <thead>
+                  <tr>
+                    <th>Categoria</th>
+                    <th>Ferramenta</th>
+                    <th>Função</th>
+                    <th>Preço</th>
+                    <th>Iniciante</th>
+                    <th>Observação</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </body>
+</html>
