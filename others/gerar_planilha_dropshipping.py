@@ -2166,6 +2166,7 @@ def main() -> None:
         print(f"Preview saved: {args.preview}")
     elif not args.skip_preview:
         print("Preview saved: not generated")
+        
 
 
 if __name__ == "__main__":
